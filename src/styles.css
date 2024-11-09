@@ -100,6 +100,7 @@ input:checked + .slider:before {
 /* Button styling */
 /* Transparent button styling */
 .square {
+  font-family: Inter,Thin,sans-serif;
   padding: 5px 20px; /* Adjust padding for a clean look */
   font-size: 16px;
   cursor: pointer;
@@ -116,4 +117,30 @@ input:checked + .slider:before {
 
   background-color: rgba(255, 255, 255, 0.2); /* Slight color on hover */
   color: #fff; /* Keep text color white */
+}
+/* Clear style for the text box */
+.text-box {
+  font-family: Inter, Thin, sans-serif;
+  width: 150%; /* Set to 100% or desired width */
+  min-height: 35px;
+  padding: 10px;
+  border: none;
+  outline: none; /* Remove outline */
+  resize: none; /* Disables resizing */
+  background-color: rgba(255, 255, 255, 0.1); /* Light, transparent background */
+  color: rgb(218, 217, 217); /* Matches text color */
+  font-size: 20px;
+  border-radius: 12px; /* More rounded edges */
+  transition: background-color 0.3s ease; /* Smooth transition on focus */
+}
+
+/* Change background on focus */
+.text-box:focus {
+  background-color: rgba(255, 255, 255, 0.2); /* Slightly darker background on focus */
+}
+
+/* Placeholder text styling */
+.text-box::placeholder {
+  color: rgba(255, 255, 255, 0.7); /* Lighter color for placeholder */
+
 }

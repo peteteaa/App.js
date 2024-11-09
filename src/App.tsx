@@ -55,17 +55,6 @@ function About({ goBack, mode, toggleMode }: AboutProps) {
 }
 
 // Contact Component with a text box
-function Contact({ goBack }: ContactProps) {
-  return (
-    <div className="App">
-      <h1>Prompt</h1>
-      <p>please enter a script prompt below</p>
-      <textarea className="text-box" placeholder="....type a couple words" />
-
-      <GoBack onClick={goBack} />
-    </div>
-  );
-}
 
 // Button for navigation
 function Button({ onClick, text }: { onClick: () => void; text: string }) {
@@ -77,13 +66,6 @@ function Button({ onClick, text }: { onClick: () => void; text: string }) {
 }
 
 // GoBack Button to navigate back to Home
-function GoBack({ onClick }: { onClick: () => void }) {
-  return (
-    <button className="square" onClick={onClick}>
-      Go Back
-    </button>
-  );
-}
 
 // Toggle switch component
 function ModeToggle({
@@ -138,5 +120,74 @@ export default function App() {
         />
       )}
     </div>
+  );
+}
+
+// Define prop types for Contact Component
+interface ContactProps {
+  goBack: () => void;
+}
+
+// Contact Component with a text box and message submission
+function Contact({ goBack }: ContactProps) {
+  const [message, setMessage] = useState(""); // State to store the message
+  const [submitted, setSubmitted] = useState(false); // Track whether the message has been submitted
+
+  const handleSubmit = () => {
+    if (message.trim() !== "") {
+      setSubmitted(true); // If the message is not empty, show the MessagePage
+    }
+  };
+
+  return (
+    <div className="App">
+      {!submitted ? (
+        // Show the text box and submit button if the message is not submitted yet
+        <>
+          <h1>Prompt</h1>
+          <p>Please enter a script prompt below:</p>
+          <textarea
+            className="text-box"
+            placeholder="....type a couple words"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)} // Update message state on text change
+          />
+          <button className="square" onClick={handleSubmit}>
+            Submit
+          </button>
+        </>
+      ) : (
+        // Show the MessagePage after the message is submitted
+        <MessagePage message={message} goBack={goBack} />
+      )}
+      <GoBack onClick={goBack} />
+    </div>
+  );
+}
+
+// MessagePage component to display the message after submission
+function MessagePage({
+  message,
+  goBack,
+}: {
+  message: string;
+  goBack: () => void;
+}) {
+  return (
+    <div className="App">
+      <h1>Message Received</h1>
+      <p>Your entered prompt:</p>
+      <div className="message-box">{message}</div>
+      <GoBack onClick={goBack} />
+    </div>
+  );
+}
+
+// GoBack Button to navigate back to the Home page
+function GoBack({ onClick }: { onClick: () => void }) {
+  return (
+    <button className="square" onClick={onClick}>
+      Go Back
+    </button>
   );
 }

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useFetch } from "react-async";
 import "./styles.css";
 
 // Define prop types for Home, About, and Contact components
@@ -24,8 +23,14 @@ interface ContactProps {
 function Home({ showAbout, showContact, mode, toggleMode }: HomeProps) {
   return (
     <div className="App">
-      <h1>{mode === "formal" ? "Welcome to VocAI" : "Hey there! Welcome to VocAI"}</h1>
-      <p>{mode === "formal" ? "How may I assist you today?" : "How can I help you out today?"}</p>
+      <h1>
+        {mode === "formal" ? "Welcome to VocAI" : "Hey there! Welcome to VocAI"}
+      </h1>
+      <p>
+        {mode === "formal"
+          ? "How may I assist you today?"
+          : "How can I help you out today?"}
+      </p>
       <ModeToggle mode={mode} toggleMode={toggleMode} />
       <Button onClick={showContact} text="Start" />
       <Button onClick={showAbout} text=" About" />
@@ -54,22 +59,31 @@ function About({ goBack, mode, toggleMode }: AboutProps) {
   );
 }
 
-// Contact Component with a text box
-
 // Button for navigation
 function Button({ onClick, text }: { onClick: () => void; text: string }) {
-  return <button className="square" onClick={onClick}>{text}</button>;
+  return (
+    <button className="square" onClick={onClick}>
+      {text}
+    </button>
+  );
 }
 
-// GoBack Button to navigate back to Home
-
-
 // Toggle switch component
-function ModeToggle({ mode, toggleMode }: { mode: string; toggleMode: () => void }) {
+function ModeToggle({
+  mode,
+  toggleMode,
+}: {
+  mode: string;
+  toggleMode: () => void;
+}) {
   return (
     <div className="mode-toggle">
       <label className="switch">
-        <input type="checkbox" onChange={toggleMode} checked={mode === "casual"} />
+        <input
+          type="checkbox"
+          onChange={toggleMode}
+          checked={mode === "casual"}
+        />
         <span className="slider"></span>
       </label>
       <p>{mode === "formal" ? "Formal Mode" : "Casual Mode"}</p>
@@ -77,6 +91,16 @@ function ModeToggle({ mode, toggleMode }: { mode: string; toggleMode: () => void
   );
 }
 
+// GoBack Button to navigate back to the Home page
+function GoBack({ onClick }: { onClick: () => void }) {
+  return (
+    <button className="square" onClick={onClick}>
+      Go Back
+    </button>
+  );
+}
+
+// Main App Component
 export default function App() {
   // State to determine which page to show
   const [page, setPage] = useState("home");
@@ -85,12 +109,31 @@ export default function App() {
   const [mode, setMode] = useState("formal"); //where formal/casual will be stored
 
   // Toggle mode between formal and casual
-  const toggleMode = () => setMode((prevMode) => (prevMode === "formal" ? "casual" : "formal"));
+  const toggleMode = () =>
+    setMode((prevMode) => (prevMode === "formal" ? "casual" : "formal"));
 
   return (
     <div className="App">
-      {page === "about" && <About goBack={() => setPage("home")} mode={mode} toggleMode={toggleMode} />}
-      {page === "contact" && <Contact goBack={() => setPage("home")} mode={mode} />}
+      {page === "about" && (
+        <About
+          goBack={() => setPage("home")}
+          mode={mode}
+          toggleMode={toggleMode}
+        />
+      )}
+      {page === "contact" && (
+        <Contact goBack={() => setPage("home")} mode={mode} />
+      )}
+      {page === "message" && (
+        <MessagePage
+          goNext={() => setPage("afterMessage")}
+          goBack={() => setPage("contact")}
+          mode={mode}
+        />
+      )}
+      {page === "afterMessage" && (
+        <AfterMessagePage goBack={() => setPage("home")} mode={mode} />
+      )}
       {page === "home" && (
         <Home
           showAbout={() => setPage("about")}
@@ -103,39 +146,20 @@ export default function App() {
   );
 }
 
-
-// Define prop types for Contact Component
-interface ContactProps {
-  goBack: () => void;
-  mode: string; // Add mode prop
-}
-
 // Contact Component with a text box and message submission
 function Contact({ goBack, mode }: ContactProps) {
   const [message, setMessage] = useState(""); // State to store the message
   const [submitted, setSubmitted] = useState(false); // Track whether the message has been submitted
-  const [script, setScript] = useState("");
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (message.trim() !== "") {
       setSubmitted(true); // If the message is not empty, show the MessagePage
     }
-
-    const response = await fetch('http://localhost:5000/generate-script', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: mode, topic: message }),
-    });
-
-    const data = await response.json();
-    console.log(data);
-    setScript(data.script);
   };
 
   return (
     <div className="App">
       {!submitted ? (
-        // Show the text box and submit button if the message is not submitted yet
         <>
           <h1>Prompt</h1>
           <p>Please enter a script prompt below:</p>
@@ -150,31 +174,56 @@ function Contact({ goBack, mode }: ContactProps) {
           </button>
         </>
       ) : (
-        // Show the MessagePage after the message is submitted
-        <MessagePage goBack={goBack}  script={script} />
+        <MessagePage message={message} goBack={goBack} mode={mode} />
       )}
-
     </div>
   );
 }
 
 // MessagePage component to display the message after submission
-function MessagePage({ goBack, script }: { goBack: () => void; script: string }) {
-
+function MessagePage({
+  message,
+  goNext,
+  goBack,
+  mode,
+}: {
+  message: string;
+  goNext: () => void;
+  goBack: () => void;
+  mode: string;
+}) {
   return (
     <div className="App">
-      <h1>{script === "" ? "Message Received" : ""}</h1>
-      <div className="message-box">{script}</div>
+      <h1>
+        {mode === "formal" ? "Message Received" : "Thanks for your message!"}
+      </h1>
+      <p>Your entered prompt:</p>
+      <div className="message-box">{message}</div>
+      <button className="square" onClick={goNext}>
+        Next
+      </button>
       <GoBack onClick={goBack} />
     </div>
   );
 }
 
-// GoBack Button to navigate back to the Home page
-function GoBack({ onClick }: { onClick: () => void }) {
+// AfterMessagePage component to display the final message
+function AfterMessagePage({
+  goBack,
+  mode,
+}: {
+  goBack: () => void;
+  mode: string;
+}) {
   return (
-    <button className="square" onClick={onClick}>
-      Go Back
-    </button>
+    <div className="App">
+      <h1>{mode === "formal" ? "Final Information" : "Here’s What’s Next"}</h1>
+      <p>
+        {mode === "formal"
+          ? "Thank you for using VocAI. We hope our tool meets your needs effectively."
+          : "Thanks for using VocAI! We hope you find it helpful."}
+      </p>
+      <GoBack onClick={goBack} />
+    </div>
   );
 }

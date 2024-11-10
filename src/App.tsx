@@ -28,7 +28,6 @@ function Home({ showAbout, showContact, mode, toggleMode }: HomeProps) {
       <ModeToggle mode={mode} toggleMode={toggleMode} />
       <Button onClick={showContact} text="Start" />
       <Button onClick={showAbout} text=" About" />
-
     </div>
   );
 }
@@ -90,7 +89,7 @@ export default function App() {
   return (
     <div className="App">
       {page === "about" && <About goBack={() => setPage("home")} mode={mode} toggleMode={toggleMode} />}
-      {page === "contact" && <Contact goBack={() => setPage("home")} />}
+      {page === "contact" && <Contact goBack={() => setPage("home")} mode={mode} />}
       {page === "home" && (
         <Home
           showAbout={() => setPage("about")}
@@ -107,10 +106,11 @@ export default function App() {
 // Define prop types for Contact Component
 interface ContactProps {
   goBack: () => void;
+  mode: string; // Add mode prop
 }
 
 // Contact Component with a text box and message submission
-function Contact({ goBack }: ContactProps) {
+function Contact({ goBack, mode }: ContactProps) {
   const [message, setMessage] = useState(""); // State to store the message
   const [submitted, setSubmitted] = useState(false); // Track whether the message has been submitted
 
@@ -139,7 +139,7 @@ function Contact({ goBack }: ContactProps) {
         </>
       ) : (
         // Show the MessagePage after the message is submitted
-        <MessagePage message={message} goBack={goBack} />
+        <MessagePage message={message} goBack={goBack} mode={mode} />
       )}
 
     </div>
@@ -147,10 +147,10 @@ function Contact({ goBack }: ContactProps) {
 }
 
 // MessagePage component to display the message after submission
-function MessagePage({ message, goBack }: { message: string; goBack: () => void }) {
+function MessagePage({ message, goBack, mode }: { message: string; goBack: () => void; mode: string }) {
   return (
     <div className="App">
-      <h1>Message Received</h1>
+      <h1>{mode === "formal" ? "Message Received" : "Thanks for your message!"}</h1>
       <p>Your entered prompt:</p>
       <div className="message-box">{message}</div>
       <GoBack onClick={goBack} />
@@ -166,5 +166,3 @@ function GoBack({ onClick }: { onClick: () => void }) {
     </button>
   );
 }
-
-

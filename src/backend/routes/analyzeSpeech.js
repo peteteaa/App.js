@@ -5,6 +5,7 @@ const { AssemblyAI } = require('assemblyai');
 const { analyzeTone } = require('../services/toneAnalyzer');
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
+const { Configuration, OpenAIApi } = require('openai');
 
 // Enhanced error types
 class AnalysisError extends Error {
@@ -44,6 +45,42 @@ const initializeClient = () => {
         apiKey: process.env.ASSEMBLYAI_API_KEY
     });
 };
+
+// Initialize OpenAI
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY
+});
+const openai = new OpenAIApi(configuration);
+
+async function generateFeedback(transcription, disfluencies) {
+    const prompt = `As a speech coach, analyze this speech:
+
+Transcription: "${transcription}"
+
+Disfluencies found: ${JSON.stringify(disfluencies, null, 2)}
+
+Provide constructive feedback including:
+1. Overall assessment of the speech
+2. Specific issues identified (filler words, stutters, etc.)
+3. Actionable tips for improvement
+4. negative aspects of the speech
+5. give points of the sentence that they need to speak louder and other quiter.
+6. give points of the sentence that they need to speak slower and other faster.
+7. make the feedback a streamlined paragraph and grade it harshly 0-100.
+8. make the feedback specific to the word or part of the sentence you are talking about rather then general feedback.
+9. when talking about something the speakers says, give the time in the recording it was said. also provide the specifc word or phrase user says in speech when giving it feedback
+
+Format the response in a clear, encouraging way.`;
+
+    const response = await openai.createChatCompletion({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.7,
+        max_tokens: 500
+    });
+
+    return response.data.choices[0].message.content;
+}
 
 // Define the speech analysis function with error handling
 function analyzeSpeech(words) {
@@ -334,12 +371,15 @@ router.post('/process-recording', upload.single('audio'), async (req, res) => {
             // Use your existing analyzeSpeech function
             const analysis = analyzeSpeech(result.words || []);
 
+            const feedback = await generateFeedback(result.text, analysis.disfluencies);
+
             res.json({
                 transcriptId: transcript.id,
                 status: result.status,
                 text: result.text,
                 analysis: analysis,
-                confidence: result.confidence
+                confidence: result.confidence,
+                feedback: feedback
             });
 
         } catch (uploadError) {

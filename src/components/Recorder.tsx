@@ -5,8 +5,17 @@ interface AnalysisResult {
   transcriptId: string;
   status: string;
   text: string;
-  analysis: any;
+  analysis: {
+    transcription: string;
+    disfluencies: Array<{
+      word: string;
+      start_time: number;
+      end_time: number;
+      type: string;
+    }>;
+  };
   confidence: number;
+  feedback: string;
 }
 
 export default function Recorder() {
@@ -56,9 +65,22 @@ export default function Recorder() {
             <audio src={mediaBlobUrl} controls />
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {analysis && (
-              <div>
-                <h3>Analysis Results:</h3>
-                <pre>{JSON.stringify(analysis, null, 2)}</pre>
+              <div className="analysis-results">
+                <h3>Speech Analysis</h3>
+                <div className="feedback-section">
+                  <h4>Coach Feedback:</h4>
+                  <div className="feedback-content">
+                    {analysis.feedback?.split('\n').map((paragraph, index) => (
+                      <p key={index}>{paragraph}</p>
+                    ))}
+                  </div>
+                </div>
+                <details>
+                  <summary>Technical Details</summary>
+                  <div className="technical-details">
+                    <pre>{JSON.stringify(analysis, null, 2)}</pre>
+                  </div>
+                </details>
               </div>
             )}
           </div>

@@ -30,7 +30,7 @@ router.post('/', async (req, res) => {
         }
 
         const prompt = `Write a ${type} script about ${topic}. Follow these guidelines:
-- Keep it between 150-200 words
+- Keep it between 50-100 words
 - For ${type === 'casual' ? 'casual tone: use conversational language, contractions, and everyday examples' : 'formal tone: use professional language, proper terminology, and maintain a structured flow'}
 - Include natural pauses and paragraph breaks
 - End with a clear conclusion

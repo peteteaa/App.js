@@ -3,8 +3,10 @@
 
   font-weight: normal;
 }
+
 .App {
-  background: linear-gradient(360deg, #c97149, #465cbe); /* Diagonal gradient */
+  background: linear-gradient(360deg, #c97149, #465cbe);
+  /* Diagonal gradient */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -22,8 +24,10 @@ h1 {
   margin: -25px 0 0;
 
   font-weight: 200;
-  font-size: 4em; /* Larger font for main heading */
+  font-size: 4em;
+  /* Larger font for main heading */
 }
+
 .toggle-switch {
   position: relative;
   display: inline-block;
@@ -85,11 +89,11 @@ h1 {
   border-radius: 50%;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #1d62e2;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(24px);
 }
 
@@ -97,79 +101,165 @@ input:checked + .slider:before {
 /* Transparent button styling */
 .square {
   font-family: Inter, Thin, sans-serif;
-  padding: 5px 20px; /* Adjust padding for a clean look */
+  padding: 5px 20px;
+  /* Adjust padding for a clean look */
   font-size: 16px;
   cursor: pointer;
   margin: 5px;
-  background-color: transparent; /* Clear background */
+  background-color: transparent;
+  /* Clear background */
   color: white;
-  border: 1px solid white; /* Light border for clarity */
-  border-radius: 5px; /* Rounded corners for a soft look */
+  border: 1px solid white;
+  /* Light border for clarity */
+  border-radius: 5px;
+  /* Rounded corners for a soft look */
   transition: background-color 0.3s, color 0.3s;
 }
 
 /* Hover effect for button */
 .square:hover {
-  background-color: rgba(255, 255, 255, 0.2); /* Slight color on hover */
-  color: #fff; /* Keep text color white */
+  background-color: rgba(255, 255, 255, 0.2);
+  /* Slight color on hover */
+  color: #fff;
+  /* Keep text color white */
 }
+
 /* Clear style for the text box */
 .text-box {
   font-family: Inter, Thin, sans-serif;
-  width: 150%; /* Set to 100% or desired width */
+  width: 150%;
+  /* Set to 100% or desired width */
   min-height: 35px;
   padding: 10px;
   border: none;
-  outline: none; /* Remove outline */
-  resize: none; /* Disables resizing */
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.1
-  ); /* Light, transparent background */
-  color: rgb(218, 217, 217); /* Matches text color */
+  outline: none;
+  /* Remove outline */
+  resize: none;
+  /* Disables resizing */
+  background-color: rgba(255,
+      255,
+      255,
+      0.1);
+  /* Light, transparent background */
+  color: rgb(218, 217, 217);
+  /* Matches text color */
   font-size: 20px;
-  border-radius: 12px; /* More rounded edges */
-  transition: background-color 0.3s ease; /* Smooth transition on focus */
+  border-radius: 12px;
+  /* More rounded edges */
+  transition: background-color 0.3s ease;
+  /* Smooth transition on focus */
 }
 
 /* Change background on focus */
 .text-box:focus {
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.2
-  ); /* Slightly darker background on focus */
+  background-color: rgba(255,
+      255,
+      255,
+      0.2);
+  /* Slightly darker background on focus */
 }
 
 /* Placeholder text styling */
 .text-box::placeholder {
-  color: rgba(255, 255, 255, 0.7); /* Lighter color for placeholder */
+  color: rgba(255, 255, 255, 0.7);
+  /* Lighter color for placeholder */
 }
+
 .about-paragraph {
   font-family: Inter, Thin, sans-serif;
-  margin-bottom: 5px; /* Reduce space between paragraphs */
-  font-size: 16px; /* Optional: Adjust the font size for better readability */
-  max-width: 600px; /* Limit the width of the paragraph */
-  width: 100%; /* Ensure it takes full available width, but constrained by max-width */
-  margin-left: auto; /* Center the paragraph */
-  margin-right: auto; /* Center the paragraph */
+  margin-bottom: 5px;
+  /* Reduce space between paragraphs */
+  font-size: 16px;
+  /* Optional: Adjust the font size for better readability */
+  max-width: 600px;
+  /* Limit the width of the paragraph */
+  width: 100%;
+  /* Ensure it takes full available width, but constrained by max-width */
+  margin-left: auto;
+  /* Center the paragraph */
+  margin-right: auto;
+  /* Center the paragraph */
 }
 
 .about-h2 {
   font-family: Inter, Thin, sans-serif;
   margin-bottom: -10px;
-  font-size: 16px; /* Optional: Adjust the font size for better readability */
-  max-width: 600px; /* Limit the width of the paragraph */
+  font-size: 16px;
+  /* Optional: Adjust the font size for better readability */
+  max-width: 600px;
+  /* Limit the width of the paragraph */
   width: 100%;
-  text-align: center; /* Center the text inside the h2 */
+  text-align: center;
+  /* Center the text inside the h2 */
 }
+
 .message-box {
   font-family: Inter, Thin, sans-serif;
   max-width: 600px;
-  margin-left: auto; /* Center the paragraph */
-  margin-right: auto; /* Center the paragraph */
+  margin-left: auto;
+  /* Center the paragraph */
+  margin-right: auto;
+  /* Center the paragraph */
   margin-bottom: 15;
+}
+
+.analysis-results {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.feedback-section {
+  margin: 20px 0;
+  padding: 15px;
+  background: white;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+}
+
+.feedback-content {
+  line-height: 1.6;
+  color: #333;
+}
+
+.feedback-content p {
+  margin: 10px 0;
+  color: #333;
+}
+
+details {
+  margin-top: 20px;
+  padding: 10px;
+  background: #e9ecef;
+  border-radius: 4px;
+}
+
+summary {
+  cursor: pointer;
+  color: #495057;
+  padding: 8px;
+}
+
+.technical-details {
+  margin-top: 10px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.technical-details pre {
+  color: #333;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+h3,
+h4 {
+  color: #212529;
+  margin-bottom: 15px;
 }

@@ -10,7 +10,11 @@ const { AssemblyAI } = require('assemblyai');
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: process.env.NODE_ENV === 'production'
+        ? 'https://your-app-name.onrender.com'
+        : 'http://localhost:3000'
+}));
 app.use(express.json());
 app.use(express.static('public'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

@@ -63,6 +63,7 @@ Transcription: "${transcription}"
 Disfluencies found: ${JSON.stringify(disfluencies, null, 2)}
 
 Provide constructive feedback including:
+stop hallucinating and giving fake time stamps when audio clips are only 2 seconds and u say feed back at 0:23.
 a very accurate assesment of the user talking and try to guess when they were talking loud/slow so the feedback sounds realistic as possible.
 A very realistic assessment of the speech
 when giving feedback talk more about vocality stuff the speaker can improve on rather than specifc words in the script aka adivce that applies to other convos

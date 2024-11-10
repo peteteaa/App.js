@@ -171,7 +171,7 @@ function MessagePage({ goBack, script }: { goBack: () => void; script: string })
 
   return (
     <div className="App">
-      <h1>{script === "" ? "Message Received" : ""}</h1>
+      <h1>{script === "" ? "Loading..." : ""}</h1>
       <div className="message-box">{script}</div>
       {script === "" ? <></> : <Recorder />}
       <GoBack onClick={goBack} />

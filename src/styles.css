@@ -263,3 +263,152 @@ h4 {
   color: #212529;
   margin-bottom: 15px;
 }
+
+/* Styling for buttons */
+button {
+  background-color: transparent;
+  border: 1px solid white;
+
+  border: white;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 8px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for buttons */
+/* Styling for buttons */
+button {
+  background-color: transparent;
+  border: 1px solid white;
+  /* Green background */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 8px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+/* Hover effect for buttons */
+button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  /* Slight color on hover */
+  color: #fff;
+  /* Darker green */
+}
+
+/* Specific styling for GoBack button */
+.GoBack-button {
+  background-color: #f44336;
+  /* Red background */
+  padding: 10px 20px;
+}
+
+.GoBack-button:hover {
+  background-color: #d32f2f;
+  /* Darker red */
+}
+
+/* Specific styling for Recorder button */
+.Recorder-button {
+  background-color: transparent;
+  border: 1px solid white;
+  /* Blue background */
+  padding: 10px 20px;
+}
+
+.Recorder-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  /* Slight color on hover */
+  color: #fff;
+  /* Darker blue */
+}
+
+/* Styling for feedback content */
+.feedback-section {
+  font-size: 0.9rem;
+  /* Smaller font size */
+  color: #555;
+  /* Subtle gray color */
+  line-height: 1.4;
+  /* Improved readability */
+  margin-top: 10px;
+}
+
+.feedback-content p {
+  margin: 4px 0;
+  /* Small margin between paragraphs */
+  font-size: 0.85rem;
+  /* Slightly smaller font within paragraphs */
+}
+
+/* Optional: Style for the Coach Feedback heading */
+.feedback-section h4 {
+  font-size: 1rem;
+  /* Slightly smaller heading */
+  color: #333;
+  /* Darker color for contrast */
+  margin-bottom: 6px;
+}
+
+/* Styling for audio element */
+audio {
+  display: block;
+  width: 60%;
+  /* Adjust width as desired to make it smaller */
+  margin: 10px auto;
+  /* Center the audio scrubber */
+  height: 30px;
+  /* Adjust height for a more compact appearance */
+}
+
+/* Positioning the language selector at the top left */
+.recorder-container {
+  position: relative;
+}
+
+/* Position the language selector at the top left of the page */
+.language-selector {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 5px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  color: #333;
+  outline: none;
+  z-index: 1000;
+  /* Ensures it stays above other elements */
+}
+
+/* Styling for feedback content */
+.feedback-content {
+  font-size: 0.85rem;
+  background-color: transparent;
+
+  /* Smaller font size */
+
+  /* Subtle gray color for readability */
+  line-height: 1.4;
+  /* Improves readability */
+  margin-top: 8px;
+}
+
+.feedback-content p {
+  background-color: transparent;
+  margin: 4px 0;
+  /* Small margin between paragraphs */
+}

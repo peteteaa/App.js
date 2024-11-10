@@ -114,19 +114,30 @@ function Contact({ goBack, mode }: ContactProps) {
   const [script, setScript] = useState("");
 
   const handleSubmit = async () => {
-    if (message.trim() !== "") {
-      setSubmitted(true); // If the message is not empty, show the MessagePage
+    if (message.trim() === "") {
+      return;
     }
 
-    const response = await fetch('http://localhost:5000/generate-script', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: mode, topic: message })
-    });
+    try {
+      setSubmitted(true);
+      const response = await fetch('http://localhost:5000/generate-script', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: mode, topic: message })
+      });
 
-    const data = await response.json();
-    console.log(data);
-    setScript(data.script);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Script generated:', data);
+      setScript(data.script);
+    } catch (error) {
+      console.error('Error generating script:', error);
+      setScript("Error generating script. Please try again.");
+      setTimeout(() => setSubmitted(false), 3000);
+    }
   };
 
   return (

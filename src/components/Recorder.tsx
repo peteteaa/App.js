@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ReactMediaRecorder } from "react-media-recorder";
+import { SUPPORTED_LANGUAGES, LanguageOption } from '../shared/constants';
 
 interface AnalysisResult {
   transcriptId: string;
@@ -16,19 +17,22 @@ interface AnalysisResult {
   };
   confidence: number;
   feedback: string;
+  language: string;
 }
 
 export default function Recorder() {
   const [analysis, setAnalysis] = React.useState<AnalysisResult | null>(null);
   const [error, setError] = React.useState<string | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = React.useState<string>('en');
 
   const handleStop = async (blobUrl: string, blob: Blob) => {
     try {
-      // Create FormData and append the audio blob
       const formData = new FormData();
       formData.append('audio', blob, 'recording.wav');
+      formData.append('language', selectedLanguage);
 
-      // Send to backend for analysis
+      console.log('Sending audio with language:', selectedLanguage);
+
       const response = await fetch('http://localhost:5000/analyze-speech/process-recording', {
         method: 'POST',
         body: formData
@@ -54,6 +58,19 @@ export default function Recorder() {
 
   return (
     <div>
+      <select
+        value={selectedLanguage}
+        onChange={(e) => {
+          console.log('Language selected:', e.target.value);
+          setSelectedLanguage(e.target.value);
+        }}
+      >
+        {SUPPORTED_LANGUAGES.map(lang => (
+          <option key={lang.code} value={lang.code}>
+            {lang.name}
+          </option>
+        ))}
+      </select>
       <ReactMediaRecorder
         audio
         onStop={handleStop}

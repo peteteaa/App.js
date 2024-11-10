@@ -6,6 +6,7 @@ const { analyzeTone } = require('../services/toneAnalyzer');
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 const { Configuration, OpenAIApi } = require('openai');
+const { SUPPORTED_LANGUAGES } = require('../../shared/constants.js');
 
 // Enhanced error types
 class AnalysisError extends Error {
@@ -52,14 +53,17 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-async function generateFeedback(transcription, disfluencies) {
-    const prompt = `As a speech coach, analyze this speech:
+async function generateFeedback(transcription, disfluencies, language = 'en') {
+    const languageName = SUPPORTED_LANGUAGES.find(l => l.code === language)?.name || 'English';
+
+    const prompt = `As a speech coach analyzing ${languageName} speech:
 
 Transcription: "${transcription}"
 
 Disfluencies found: ${JSON.stringify(disfluencies, null, 2)}
 
 Provide constructive feedback including:
+A very harsh criticism of the speech and sound like you are speaking directly to the speaker.
 1. Overall assessment of the speech
 2. Specific issues identified (filler words, stutters, etc.)
 3. Actionable tips for improvement
@@ -70,7 +74,7 @@ Provide constructive feedback including:
 8. make the feedback specific to the word or part of the sentence you are talking about rather then general feedback.
 9. when talking about something the speakers says, give the time in the recording it was said. also provide the specifc word or phrase user says in speech when giving it feedback
 
-Format the response in a clear, encouraging way.`;
+${language !== 'en' ? `Provide the feedback in ${languageName}.` : ''}`;
 
     const response = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
@@ -318,18 +322,12 @@ router.post('/test-stutter', async (req, res) => {
 router.post('/process-recording', upload.single('audio'), async (req, res) => {
     try {
         if (!req.file) {
-            throw new AnalysisError(
-                'No audio file provided',
-                'VALIDATION_ERROR',
-                { provided: 'no file' }
-            );
+            throw new AnalysisError('No audio file provided', 'VALIDATION_ERROR');
         }
 
-        console.log('Received audio file:', {
-            size: req.file.size,
-            mimetype: req.file.mimetype,
-            originalname: req.file.originalname
-        });
+        // Get language from form data
+        const language = req.body.language || 'en';
+        console.log('Processing audio in language:', language); // Debug log
 
         const client = initializeClient();
 
@@ -341,12 +339,11 @@ router.post('/process-recording', upload.single('audio'), async (req, res) => {
                     'content-type': 'audio/wav'
                 }
             });
-            console.log('Upload successful:', uploadResponse.data);
 
-            // Create transcript using the uploaded URL
+            // Create transcript with specified language
             const transcript = await client.transcripts.create({
                 audio_url: uploadResponse.data.upload_url,
-                language_code: 'en',
+                language_code: language, // Use the selected language
                 format_text: true
             });
 
@@ -371,7 +368,8 @@ router.post('/process-recording', upload.single('audio'), async (req, res) => {
             // Use your existing analyzeSpeech function
             const analysis = analyzeSpeech(result.words || []);
 
-            const feedback = await generateFeedback(result.text, analysis.disfluencies);
+            // Pass language to generateFeedback
+            const feedback = await generateFeedback(result.text, analysis.disfluencies, language);
 
             res.json({
                 transcriptId: transcript.id,
@@ -379,15 +377,16 @@ router.post('/process-recording', upload.single('audio'), async (req, res) => {
                 text: result.text,
                 analysis: analysis,
                 confidence: result.confidence,
-                feedback: feedback
+                feedback: feedback,
+                language: language // Include language in response
             });
 
         } catch (uploadError) {
-            console.error('Upload/Transcription error:', uploadError.response?.data || uploadError.message);
+            console.error('Upload/Transcription error:', uploadError);
             throw new AnalysisError(
                 'Failed to process audio',
                 'UPLOAD_ERROR',
-                { details: uploadError.response?.data || uploadError.message }
+                { details: uploadError.message }
             );
         }
 

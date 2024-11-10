@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useFetch } from "react-async";
+import Recorder from './components/Recorder';
 import "./styles.css";
 
 // Define prop types for Home, About, and Contact components
@@ -18,6 +18,7 @@ interface AboutProps {
 
 interface ContactProps {
   goBack: () => void;
+  mode: string; // Add mode prop
 }
 
 // Home Component
@@ -105,10 +106,6 @@ export default function App() {
 
 
 // Define prop types for Contact Component
-interface ContactProps {
-  goBack: () => void;
-  mode: string; // Add mode prop
-}
 
 // Contact Component with a text box and message submission
 function Contact({ goBack, mode }: ContactProps) {
@@ -124,7 +121,7 @@ function Contact({ goBack, mode }: ContactProps) {
     const response = await fetch('http://localhost:5000/generate-script', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: mode, topic: message }),
+      body: JSON.stringify({ type: mode, topic: message })
     });
 
     const data = await response.json();
@@ -151,7 +148,7 @@ function Contact({ goBack, mode }: ContactProps) {
         </>
       ) : (
         // Show the MessagePage after the message is submitted
-        <MessagePage goBack={goBack}  script={script} />
+        <MessagePage goBack={goBack} script={script} />
       )}
 
     </div>
@@ -165,6 +162,7 @@ function MessagePage({ goBack, script }: { goBack: () => void; script: string })
     <div className="App">
       <h1>{script === "" ? "Message Received" : ""}</h1>
       <div className="message-box">{script}</div>
+      {script === "" ? <></> : <Recorder />}
       <GoBack onClick={goBack} />
     </div>
   );

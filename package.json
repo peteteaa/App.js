@@ -11,8 +11,8 @@
   "dependencies": {
     "loader-utils": "3.2.1",
     "react": "18.2.0",
-    "react-audio-voice-recorder": "^2.2.0",
     "react-dom": "18.2.0",
+    "react-media-recorder": "^1.7.1",
     "react-scripts": "5.0.1"
   },
   "devDependencies": {

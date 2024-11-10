@@ -1,31 +1,21 @@
 import * as React from 'react';
-import { AudioRecorder } from 'react-audio-voice-recorder';
-
-const addAudioElement = (blob: Blob) => {
-};
+import { ReactMediaRecorder } from "react-media-recorder";
 
 export default function Recorder() {
   return (
    <div>
-   <AudioRecorder
-      onRecordingComplete={(blob: Blob) => {
-        console.log(blob);  
-        const url = URL.createObjectURL(blob);
-        console.log(`Url: ${url}`);
-
-        const audio = document.createElement("audio");
-        audio.src = url;
-        audio.controls = true;
-        document.body.appendChild(audio);
-      }}
-      audioTrackConstraints={{
-        noiseSuppression: true,
-        echoCancellation: true,
-	autoGainControl: false,
-      }}
-      downloadOnSavePress={false}
-      downloadFileExtension="webm"
-      showVisualizer={true}
+   <ReactMediaRecorder
+     audio
+     onStop={ async (blobUrl, blob) => {
+     }}
+     render={({ status, startRecording, stopRecording, mediaBlobUrl }) => (
+        <div>
+          <p>{status}</p>
+          <button onClick={startRecording}>Start Recording</button>
+          <button onClick={stopRecording}>Stop Recording</button>
+	  <audio src={mediaBlobUrl} controls />
+        </div>
+      )}
     />
     </div>
   );

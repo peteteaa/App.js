@@ -43,10 +43,15 @@ function About({ goBack, mode, toggleMode }: AboutProps) {
   return (
     <div className="App">
       <h1>{mode === "formal" ? "About VocAI" : "About Us at VocAI"}</h1>
-      <p>
+      <h2 className="about-h2">
         {mode === "formal"
           ? "Here is some information about the application and its features."
           : "Here’s what our app can do for you!"}
+      </h2>
+      <p className="about-paragraph">
+        {mode === "formal"
+          ? "Our AI-powered web app is designed to generate customized scripts based on user prompts, allowing for a variety of writing styles and tones. It not only creates the script but also analyzes the delivery to determine whether it aligns more with a casual or formal presentation style. Our program also scores users based off levels of tonality, pitch and intonation. This feature helps users understand how different tones can impact the effectiveness and suitability of the script for different contexts, whether it’s for a professional setting, informal conversation, or anything in between."
+          : "Our AI-powered app is built to help you generate custom scripts based on your prompts, giving you a range of writing styles and tones to choose from. Not only does it create the script, but it also checks how it reads — figuring out if it sounds more casual or formal. This lets you see how different tones can change the feel and impact of your script, whether you’re using it for a work setting, a casual chat, or anything in between."}
       </p>
       <ModeToggle mode={mode} toggleMode={toggleMode} />
       <GoBack onClick={goBack} />
@@ -95,7 +100,7 @@ export default function App() {
   const [page, setPage] = useState("home");
 
   // State to determine mode (formal or casual)
-  const [mode, setMode] = useState("formal");
+  const [mode, setMode] = useState("formal"); //where formal/casual will be stored
 
   // Toggle mode between formal and casual
   const toggleMode = () =>

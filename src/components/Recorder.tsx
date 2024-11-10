@@ -25,15 +25,30 @@ export default function Recorder() {
   const [error, setError] = React.useState<string | null>(null);
   const [selectedLanguage, setSelectedLanguage] = React.useState<string>('en');
 
+  const getServerUrl = async () => {
+    for (let port = 5000; port <= 5010; port++) {
+      try {
+        const response = await fetch(`http://localhost:${port}/health`);
+        if (response.ok) {
+          return `http://localhost:${port}`;
+        }
+      } catch (e) {
+        continue;
+      }
+    }
+    throw new Error('Could not find server');
+  };
+
   const handleStop = async (blobUrl: string, blob: Blob) => {
     try {
+      const serverUrl = await getServerUrl();
       const formData = new FormData();
       formData.append('audio', blob, 'recording.wav');
       formData.append('language', selectedLanguage);
 
       console.log('Sending audio with language:', selectedLanguage);
 
-      const response = await fetch('http://localhost:5000/analyze-speech/process-recording', {
+      const response = await fetch(`${serverUrl}/analyze-speech/process-recording`, {
         method: 'POST',
         body: formData
       });

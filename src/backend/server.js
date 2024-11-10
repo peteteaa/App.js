@@ -58,11 +58,20 @@ app.use((err, req, res, next) => {
 
 // Start server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`- Health check: http://localhost:${PORT}/health`);
-    console.log(`- Speech analysis: http://localhost:${PORT}/analyze-speech`);
-    console.log(`- Tone analysis: http://localhost:${PORT}/analyze-tone`);
-});
+
+function startServer(port) {
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    }).on('error', (err) => {
+        if (err.code === 'EADDRINUSE') {
+            console.log(`Port ${port} is busy, trying ${port + 1}...`);
+            startServer(port + 1);
+        } else {
+            console.error('Server error:', err);
+        }
+    });
+}
+
+startServer(PORT);
 
 module.exports = app; 

@@ -63,7 +63,10 @@ Transcription: "${transcription}"
 Disfluencies found: ${JSON.stringify(disfluencies, null, 2)}
 
 Provide constructive feedback including:
-A very harsh criticism of the speech and sound like you are speaking directly to the speaker.
+a very accurate assesment of the user talking and try to guess when they were talking loud/slow so the feedback sounds realistic as possible.
+A very realistic assessment of the speech
+when giving feedback talk more about vocality stuff the speaker can improve on rather than specifc words in the script aka adivce that applies to other convos
+A harsh criticism of the speech and sound like you are speaking directly to the speaker.
 1. Overall assessment of the speech
 2. Specific issues identified (filler words, stutters, etc.)
 3. Actionable tips for improvement
@@ -71,8 +74,8 @@ A very harsh criticism of the speech and sound like you are speaking directly to
 5. give points of the sentence that they need to speak louder and other quiter.
 6. give points of the sentence that they need to speak slower and other faster.
 7. make the feedback a streamlined paragraph and grade it harshly 0-100.
-8. make the feedback specific to the word or part of the sentence you are talking about rather then general feedback.
-9. when talking about something the speakers says, give the time in the recording it was said. also provide the specifc word or phrase user says in speech when giving it feedback
+8. when talking about something the speakers says, give the time in the recording it was said. also provide the specifc word or phrase user says in speech when giving it feedback
+9. make the feedback sound like donald trump is giving it.
 
 ${language !== 'en' ? `Provide the feedback in ${languageName}.` : ''}`;
 

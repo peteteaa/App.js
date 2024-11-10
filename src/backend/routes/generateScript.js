@@ -34,6 +34,7 @@ router.post('/', async (req, res) => {
 - For ${type === 'casual' ? 'casual tone: use conversational language, contractions, and everyday examples' : 'formal tone: use professional language, proper terminology, and maintain a structured flow'}
 - Include natural pauses and paragraph breaks
 - End with a clear conclusion
+at the bottom include in parentheses this a sample you say whatever you want
 
 The script should be suitable for speech practice.`;
 

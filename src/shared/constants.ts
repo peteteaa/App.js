@@ -10,5 +10,6 @@ export const SUPPORTED_LANGUAGES: LanguageOption[] = [
     { code: 'de', name: 'German' },
     { code: 'it', name: 'Italian' },
     { code: 'pt', name: 'Portuguese' },
-    { code: 'nl', name: 'Dutch' }
+    { code: 'nl', name: 'Dutch' },
+    { code: 'tr', name: 'Turkish' },
 ]; 

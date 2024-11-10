@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useFetch } from "react-async";
 import "./styles.css";
 
 // Define prop types for Home, About, and Contact components
@@ -113,11 +114,22 @@ interface ContactProps {
 function Contact({ goBack, mode }: ContactProps) {
   const [message, setMessage] = useState(""); // State to store the message
   const [submitted, setSubmitted] = useState(false); // Track whether the message has been submitted
+  const [script, setScript] = useState("");
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (message.trim() !== "") {
       setSubmitted(true); // If the message is not empty, show the MessagePage
     }
+
+    const response = await fetch('http://localhost:5000/generate-script', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: mode, topic: message }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+    setScript(data.script);
   };
 
   return (
@@ -139,7 +151,7 @@ function Contact({ goBack, mode }: ContactProps) {
         </>
       ) : (
         // Show the MessagePage after the message is submitted
-        <MessagePage message={message} goBack={goBack} mode={mode} />
+        <MessagePage goBack={goBack}  script={script} />
       )}
 
     </div>
@@ -147,12 +159,12 @@ function Contact({ goBack, mode }: ContactProps) {
 }
 
 // MessagePage component to display the message after submission
-function MessagePage({ message, goBack, mode }: { message: string; goBack: () => void; mode: string }) {
+function MessagePage({ goBack, script }: { goBack: () => void; script: string }) {
+
   return (
     <div className="App">
-      <h1>{mode === "formal" ? "Message Received" : "Thanks for your message!"}</h1>
-      <p>Your entered prompt:</p>
-      <div className="message-box">{message}</div>
+      <h1>{script === "" ? "Message Received" : ""}</h1>
+      <div className="message-box">{script}</div>
       <GoBack onClick={goBack} />
     </div>
   );

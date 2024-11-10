@@ -166,3 +166,10 @@ input:checked + .slider:before {
   width: 100%;
   text-align: center; /* Center the text inside the h2 */
 }
+.message-box {
+  font-family: Inter, Thin, sans-serif;
+  max-width: 600px;
+  margin-left: auto; /* Center the paragraph */
+  margin-right: auto; /* Center the paragraph */
+  margin-bottom: 15;
+}

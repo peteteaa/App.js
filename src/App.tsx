@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./styles.css";
-//test
+
 // Define prop types for Home, About, and Contact components
 interface HomeProps {
   showAbout: () => void;
@@ -23,17 +23,12 @@ interface ContactProps {
 function Home({ showAbout, showContact, mode, toggleMode }: HomeProps) {
   return (
     <div className="App">
-      <h1>
-        {mode === "formal" ? "Welcome to VocAI" : "Hey there! Welcome to VocAI"}
-      </h1>
-      <p>
-        {mode === "formal"
-          ? "How may I assist you today?"
-          : "How can I help you out today?"}
-      </p>
+      <h1>{mode === "formal" ? "Welcome to VocAI" : "Hey there! Welcome to VocAI"}</h1>
+      <p>{mode === "formal" ? "How may I assist you today?" : "How can I help you out today?"}</p>
       <ModeToggle mode={mode} toggleMode={toggleMode} />
       <Button onClick={showContact} text="Start" />
       <Button onClick={showAbout} text=" About" />
+
     </div>
   );
 }
@@ -63,31 +58,18 @@ function About({ goBack, mode, toggleMode }: AboutProps) {
 
 // Button for navigation
 function Button({ onClick, text }: { onClick: () => void; text: string }) {
-  return (
-    <button className="square" onClick={onClick}>
-      {text}
-    </button>
-  );
+  return <button className="square" onClick={onClick}>{text}</button>;
 }
 
 // GoBack Button to navigate back to Home
 
+
 // Toggle switch component
-function ModeToggle({
-  mode,
-  toggleMode,
-}: {
-  mode: string;
-  toggleMode: () => void;
-}) {
+function ModeToggle({ mode, toggleMode }: { mode: string; toggleMode: () => void }) {
   return (
     <div className="mode-toggle">
       <label className="switch">
-        <input
-          type="checkbox"
-          onChange={toggleMode}
-          checked={mode === "casual"}
-        />
+        <input type="checkbox" onChange={toggleMode} checked={mode === "casual"} />
         <span className="slider"></span>
       </label>
       <p>{mode === "formal" ? "Formal Mode" : "Casual Mode"}</p>
@@ -103,18 +85,11 @@ export default function App() {
   const [mode, setMode] = useState("formal"); //where formal/casual will be stored
 
   // Toggle mode between formal and casual
-  const toggleMode = () =>
-    setMode((prevMode) => (prevMode === "formal" ? "casual" : "formal"));
+  const toggleMode = () => setMode((prevMode) => (prevMode === "formal" ? "casual" : "formal"));
 
   return (
     <div className="App">
-      {page === "about" && (
-        <About
-          goBack={() => setPage("home")}
-          mode={mode}
-          toggleMode={toggleMode}
-        />
-      )}
+      {page === "about" && <About goBack={() => setPage("home")} mode={mode} toggleMode={toggleMode} />}
       {page === "contact" && <Contact goBack={() => setPage("home")} />}
       {page === "home" && (
         <Home
@@ -127,6 +102,7 @@ export default function App() {
     </div>
   );
 }
+
 
 // Define prop types for Contact Component
 interface ContactProps {
@@ -165,19 +141,13 @@ function Contact({ goBack }: ContactProps) {
         // Show the MessagePage after the message is submitted
         <MessagePage message={message} goBack={goBack} />
       )}
-      <GoBack onClick={goBack} />
+
     </div>
   );
 }
 
 // MessagePage component to display the message after submission
-function MessagePage({
-  message,
-  goBack,
-}: {
-  message: string;
-  goBack: () => void;
-}) {
+function MessagePage({ message, goBack }: { message: string; goBack: () => void }) {
   return (
     <div className="App">
       <h1>Message Received</h1>
@@ -196,3 +166,5 @@ function GoBack({ onClick }: { onClick: () => void }) {
     </button>
   );
 }
+
+
